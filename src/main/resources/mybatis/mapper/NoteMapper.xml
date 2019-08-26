@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.github.note.dao.NoteDao">
+
+    <resultMap id="Note" type="com.github.note.domain.Note" >
+        <result column="id" property="id" />
+        <result column="title" property="title" />
+        <result column="date" property="date" />
+        <result column="content" property="content" />
+        <result column="star" property="star" />
+        <result column="user_id" property="userId" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        `id`,
+        `title`,
+        `date`,
+        `content`,
+        `star`,
+        `user_id`
+    </sql>
+
+    <insert id="insert" parameterType="java.util.Map" >
+        INSERT INTO note (
+        `id`,
+        `title`,
+        `date`,
+        `content`,
+        `star`,
+        `user_id`
+        )
+        VALUES(
+        #{note.id},
+        #{note.title},
+        #{note.date},
+        #{note.content},
+        #{note.star},
+        #{note.userId}
+        )
+    </insert>
+
+    <delete id="delete" parameterType="java.util.Map" >
+        DELETE FROM note
+        WHERE `id` = #{id}
+    </delete>
+
+    <update id="update" parameterType="java.util.Map" >
+        UPDATE note
+        <set>
+            <if test="note.title != null and note.title != '' " >
+                title = #{note.title},
+            </if>
+        </set>
+        <set>
+            <if test="note.date != null and note.date != '' " >
+                date = #{note.date},
+            </if>
+        </set>
+        <set>
+            <if test="note.content != null and note.content != '' " >
+                content = #{note.content},
+            </if>
+        </set>
+        <set>
+            <if test="note.star != null and note.star != '' " >
+                star = #{note.star},
+            </if>
+        </set>
+        WHERE `id` = #{note.id}
+    </update>
+
+
+    <select id="getAll" resultMap="Note">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM note where user_id = #{note.userId}
+    </select>
+
+    <select id="load" parameterType="java.util.Map" resultMap="Note">
+        SELECT <include refid="Base_Column_List" />
+        FROM note
+        WHERE `id` = #{id}
+    </select>
+
+    <select id="pageList" parameterType="java.util.Map" resultMap="Note">
+        SELECT <include refid="Base_Column_List" />
+        FROM note
+        LIMIT #{offset}, #{pagesize} where user_id = #{note.userId}
+    </select>
+
+    <select id="pageListCount" parameterType="java.util.Map" resultType="int">
+        SELECT count(1)
+        FROM note where user_id = #{note.userId}
+    </select>
+
+</mapper>

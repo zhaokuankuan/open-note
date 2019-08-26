@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.github.note.dao.UserDao">
+
+    <resultMap id="User" type="com.github.note.domain.User" >
+        <result column="id" property="id" />
+        <result column="login_name" property="loginName" />
+        <result column="name" property="name" />
+        <result column="password" property="password" />
+        <result column="create_time" property="createTime" />
+        <result column="avtor" property="avtor" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        `id`,
+        `login_name`,
+        `name`,
+        `password`,
+        `create_time`,
+        `avtor`
+    </sql>
+
+    <insert id="insert" parameterType="java.util.Map" >
+        INSERT INTO user (
+        `id`,
+        `login_name`,
+        `name`,
+        `password`,
+        `create_time`,
+        `avtor`
+        )
+        VALUES(
+        #{user.id},
+        #{user.loginName},
+        #{user.name},
+        #{user.password},
+        #{user.createTime},
+        #{user.avtor}
+        )
+    </insert>
+
+    <delete id="delete" parameterType="java.util.Map" >
+        DELETE FROM user
+        WHERE `id` = #{id}
+    </delete>
+
+    <update id="update" parameterType="java.util.Map" >
+        UPDATE user
+        <set>
+            <if test="user.loginName != null and user.loginName != '' " >
+                login_name = #{user.loginName},
+            </if>
+            <if test="user.name != null and user.name != '' " >
+                name = #{user.name},
+            </if>
+            <if test="user.password != null and user.password != '' " >
+                password = #{user.password},
+            </if>
+            <if test="user.createTime != null and user.createTime != '' " >
+                create_time = #{user.createTime},
+            </if>
+            <if test="user.avtor != null and user.avtor != '' " >
+                avtor = #{user.avtor},
+            </if>
+        </set>
+        WHERE `id` = #{user.id}
+    </update>
+
+
+    <select id="getAll" resultMap="User">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM user
+        <where>
+            <if test="user.id != null and user.id != '' " >
+                id = #{user.id} AND
+            </if>
+            <if test="user.loginName != null and user.loginName != '' " >
+                login_name = #{user.loginName} AND
+            </if>
+            <if test="user.name != null and user.name != '' " >
+                name = #{user.name} AND
+            </if>
+            <if test="user.password != null and user.password != '' " >
+                password = #{user.password} AND
+            </if>
+            <if test="user.createTime != null and user.createTime != '' " >
+                create_time = #{user.createTime} AND
+            </if>
+            <if test="user.avtor != null and user.avtor != '' " >
+                avtor = #{user.avtor} AND
+            </if>
+            1=1
+        </where>
+        ORDER BY id DESC
+    </select>
+
+    <select id="load" parameterType="java.util.Map" resultMap="User">
+        SELECT <include refid="Base_Column_List" />
+        FROM user
+        WHERE `id` = #{id}
+    </select>
+
+    <select id="pageList" parameterType="java.util.Map" resultMap="User">
+        SELECT <include refid="Base_Column_List" />
+        FROM user
+        <where>
+            <if test="user.id != null and user.id != '' " >
+                id = #{user.id} AND
+            </if>
+            <if test="user.loginName != null and user.loginName != '' " >
+                login_name = #{user.loginName} AND
+            </if>
+            <if test="user.name != null and user.name != '' " >
+                name = #{user.name} AND
+            </if>
+            <if test="user.password != null and user.password != '' " >
+                password = #{user.password} AND
+            </if>
+            <if test="user.createTime != null and user.createTime != '' " >
+                create_time = #{user.createTime} AND
+            </if>
+            <if test="user.avtor != null and user.avtor != '' " >
+                avtor = #{user.avtor} AND
+            </if>
+            1=1
+        </where>
+        ORDER BY id DESC
+        LIMIT #{offset}, #{pagesize}
+    </select>
+
+    <select id="pageListCount" parameterType="java.util.Map" resultType="int">
+        SELECT count(1)
+        FROM user
+        <where>
+            <if test="user.id != null and user.id != '' " >
+                id = #{user.id} AND
+            </if>
+            <if test="user.loginName != null and user.loginName != '' " >
+                login_name = #{user.loginName} AND
+            </if>
+            <if test="user.name != null and user.name != '' " >
+                name = #{user.name} AND
+            </if>
+            <if test="user.password != null and user.password != '' " >
+                password = #{user.password} AND
+            </if>
+            <if test="user.createTime != null and user.createTime != '' " >
+                create_time = #{user.createTime} AND
+            </if>
+            <if test="user.avtor != null and user.avtor != '' " >
+                avtor = #{user.avtor} AND
+            </if>
+            1=1
+        </where>
+    </select>
+
+</mapper>
